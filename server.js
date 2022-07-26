@@ -4,10 +4,15 @@ const cors = require("cors");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const passportSetup = require('./passport');
-const authRoute = require("./routes/auth")
+const authRoute = require("./routes/auth");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const app = express();
+mongoose.connect("mongodb+srv://Ajay-kumar:Ajaykumar$13@cluster0.ofmxz.mongodb.net/eclubUsers");
 
+app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}))
 app.use(cookieSession({
     name:'session',
     keys:['cyberwolve'],
