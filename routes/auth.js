@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const newUser = require("../models/usersModel");
-
+const Query = require("../models/queryModel");
 
 router.get("/login/failed", (req, res) => {
     res.status(401).json({
@@ -46,7 +46,6 @@ router.get("/newUser/:email", (req, res) => {
 router.get("/google", passport.authenticate("google", ["profile", "email"]));
 
 router.post("/newUser/save", (req, res) => {
-    console.log(req.body);
     newUser.create({
         email: req.body.email,
         registration: req.body.registration,
@@ -64,6 +63,32 @@ router.post("/newUser/save", (req, res) => {
         })
     })
     
+})
+
+router.post("/newQuery/save", (req, res) => {
+    Query.create({
+        RegistrationNumber: req.body.RegistrationNumber,
+        Name: req.body.Name,
+        Query: req.body.Query,
+    })
+    .then(response => {
+        res.json({
+            success: true,
+        })
+    })
+    .catch(err => {
+        res.json({
+            success: false,
+        })
+    })
+})
+
+router.get("/getRegno/:email", (req, res) => {
+    newUser.find({email: req.params.email}, (err, docs)=> {
+        res.json({
+            regNo: docs[0].registration,
+        })
+    })
 })
 
 module.exports = router;
